@@ -10,4 +10,4 @@ clean:
 	echo "lex.l"
 	echo "Do you want to continue (y/n)?"
 	read choice
-	if [ "${choice}" = "y" ] | [ "${choice}" ="Y" ]; then rm `ls -1 | grep -v "\(lex.l\)\|\(yacc.y\)\|\(Makefile\)"` ; fi
+	if [ "${choice}" = "y" ] | [ "${choice}" ="Y" ]; then rm `ls -1 | grep -v "\(lex.l\)\|\(yacc.y\)\|\(Makefile\)\|\(global\)"` ; fi
