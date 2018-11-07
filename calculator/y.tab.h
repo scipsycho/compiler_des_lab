@@ -48,7 +48,9 @@ extern int yydebug;
     NUMBER = 258,
     VARIABLE = 259,
     NEWLINE = 260,
-    EXIT = 261
+    EXIT = 261,
+    INFO = 262,
+    UMINUS = 263
   };
 #endif
 /* Tokens.  */
@@ -56,6 +58,8 @@ extern int yydebug;
 #define VARIABLE 259
 #define NEWLINE 260
 #define EXIT 261
+#define INFO 262
+#define UMINUS 263
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

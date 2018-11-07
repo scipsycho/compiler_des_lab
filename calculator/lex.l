@@ -4,11 +4,10 @@
     #include <stdlib.h>
     #include "y.tab.h"
     #include <assert.h>
-    #include "global.h"
 
     int yylval;
     extern char* yytext;
-    extern char* varNames[];
+    extern char *varNames[];
     int varCounter = 0;
     int i=0;
     int isFound = 0;
@@ -23,6 +22,7 @@ VARIABLE    [a-zA-z_][a-zA-z0-9_]*
 
 quit.*        return EXIT;
 exit.*        return EXIT;
+info.*        return INFO;
 {OPERATOR}  { return yytext[0]; }
 {DIGIT}     { yylval = atoi(yytext); return NUMBER; }
 {BRACKET}   { return yytext[0]; }
@@ -39,7 +39,7 @@ exit.*        return EXIT;
 		}
 		if(!isFound)
 		{
-                        assert(varCounter < MAX_VARS);
+                        assert(varCounter < 100);
                     
 			varNames[varCounter] = malloc( sizeof(char) * yyleng );
 		        memcpy(varNames[varCounter],yytext, sizeof(char) * yyleng);	
