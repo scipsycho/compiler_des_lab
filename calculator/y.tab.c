@@ -1252,10 +1252,10 @@ yyreduce:
                         i = 0;
                         while(varNames[i] != NULL && isSet[i] )
                         {               
-                            printf("%*s | %*d\n",30,varNames[i],30,reg[i]);
+                            printf("%*s | %*d\n",15,varNames[i],15,reg[i]);
                             i++;
                         }
-                    }
+            }
 #line 1260 "y.tab.c" /* yacc.c:1646  */
     break;
 
