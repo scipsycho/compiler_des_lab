@@ -1,9 +1,9 @@
 
 test: SHELL:=/bin/bash
-test: yacc.y lex.l
+test: yacc.y lex.l global.c
 	yacc yacc.y -d
 	lex lex.l
-	cc y.tab.c lex.yy.c -o test
+	cc y.tab.c lex.yy.c global.c -o test
 
 clean: SHELL:=/bin/bash
 clean:

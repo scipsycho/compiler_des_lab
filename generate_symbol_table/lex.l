@@ -1,48 +1,67 @@
 %{
 
 #include <stdio.h>
+#include <string.h>
 #include "y.tab.h"
+#include "global.h"
+int i;
 
-extern char *varName[];
-
-int allocCopy()
-{
-    yylval.name = malloc(sizeof(char)*yyleng); 
-    memcpy(yylval.name, yytext, yyleng);
-}
-
+char * varNames[SIZE] = { NULL };
+char * varTypes[SIZE] = { NULL };
+char * dType 
 %}
 
 DATA_TYPE  "int"|"float"|"double"|"char"
-WHITESPACE  [ \t\n]+
 IDENTIFIER  [a-zA-Z_][a-zA-Z0-9_]*
 
 %%
 
+"#".*        ;
 {DATA_TYPE}  { 
-                allocCopy();
-                printf("DT<%s>",yylval.name);
+                i = 0;
+                while(i <= dtype_i )
+                {
+                    if(strcmp(yytext,dTypeNames[i]) == 0)
+                        break;
+                    i++;
+                }  
+                
+                if( i > dtype_i )
+                {
+                    yyerror("Unknown data type error");
+                    exit(1); 
+                }
+                printf("DT");
+                yylval = i;
                 return DATA_TYPE; 
              }
 
 {IDENTIFIER} { 
-                allocCopy();
-                printf("ID<%s>",yylval.name);
+                if( var_i >= SIZE )
+                {
+                    yyerror("Identifier overflow error");
+                    exit(1);
+                }
+                varNames[var_i] = malloc(sizeof(char)*yyleng);
+                memcpy(varNames[var_i],yytext, yyleng);
+                yylval = var_i;
+                var_i++;
+                printf("ID");
                 return IDENTIFIER; 
              }
 
 
-";"             return SEMICOLON;
+";"            { printf(";");  return SEMICOLON; }
 
-","             return COMMA;
+","            { printf(","); return COMMA; }
 
-"{"             return CURLY_OPEN;
+"{"            { printf("{"); return CURLY_OPEN; }
 
-"}"             return CURLY_CLOSE;
+"}"            { printf("}"); return CURLY_CLOSE; }
 
-"("             return CIRC_OPEN;
+"("            { printf("("); return CIRC_OPEN; }
 
-")"             return CIRC_CLOSE;
+")"            { printf(")"); return CIRC_CLOSE; }
 
 .            ;
 %%
