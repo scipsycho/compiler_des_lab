@@ -3,7 +3,7 @@ test: SHELL:=/bin/bash
 test: yacc.y lex.l
 	yacc yacc.y -d
 	lex lex.l
-	cc y.tab.c lex.yy.c -o test
+	cc y.tab.c -lm lex.yy.c -o test
 
 clean: SHELL:=/bin/bash
 clean:

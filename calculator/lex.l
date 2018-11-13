@@ -15,7 +15,7 @@
 
 DIGIT       [0-9]+
 BRACKET     [()]
-OPERATOR   [+-/*=]
+OPERATOR   [+-/*=^]
 VARIABLE    [a-zA-z_][a-zA-z0-9_]*
 
 %%

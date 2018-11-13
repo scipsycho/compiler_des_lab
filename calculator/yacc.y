@@ -5,6 +5,7 @@ YACC FILE for the calculator
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "global.h"
 
 int reg[100] = { 0 };
@@ -19,6 +20,7 @@ int i;
 %right '='
 %left   '+' '-'
 %left   '*' '/'
+%left   '^'
 %left UMINUS 
 
 %start lines
@@ -52,6 +54,8 @@ exp:   exp '+' exp   { $$ = $1 + $3; }
 
      | exp '/' exp   { if( $3 == 0 ) {  yyerror("Divide by Zero Error"); $$ = -1; return 1; } else { $$ = $1 / $3 ; } } 
 
+     | exp '^' exp   { $$ = pow($1,$3); }
+ 
      | '-' exp %prec UMINUS { $$ = 0 - $2; }
 
      | '(' exp ')'   { $$ = $2; }
