@@ -45,21 +45,23 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUMBER = 258,
+    INTEGER = 258,
     VARIABLE = 259,
     NEWLINE = 260,
     EXIT = 261,
     INFO = 262,
-    UMINUS = 263
+    EXP = 263,
+    UMINUS = 264
   };
 #endif
 /* Tokens.  */
-#define NUMBER 258
+#define INTEGER 258
 #define VARIABLE 259
 #define NEWLINE 260
 #define EXIT 261
 #define INFO 262
-#define UMINUS 263
+#define EXP 263
+#define UMINUS 264
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

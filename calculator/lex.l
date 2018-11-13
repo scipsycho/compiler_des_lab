@@ -13,9 +13,9 @@
     int isFound = 0;
 %}
 
-DIGIT       [0-9]+
+INTEGERS    [0-9]+
 BRACKET     [()]
-OPERATOR   [+-/*=^]
+OPERATOR    [+-/*=]
 VARIABLE    [a-zA-z_][a-zA-z0-9_]*
 
 %%
@@ -23,9 +23,31 @@ VARIABLE    [a-zA-z_][a-zA-z0-9_]*
 quit.*        return EXIT;
 exit.*        return EXIT;
 info.*        return INFO;
-{OPERATOR}  { return yytext[0]; }
-{DIGIT}     { yylval = atoi(yytext); return NUMBER; }
-{BRACKET}   { return yytext[0]; }
+"exp"         { 
+#ifdef DEBUG_CALC 
+                printf("EXP<>"); 
+#endif
+                return EXP; 
+              }
+{OPERATOR}  { 
+#ifdef DEBUG_CALC
+                printf("OPR<%c>",yytext[0]); 
+#endif                
+                return yytext[0]; 
+            }
+{INTEGERS}     { 
+#ifdef DEBUG_CALC
+                    printf("NUM<%s>",yytext); 
+#endif      
+                    yylval = atoi(yytext); return INTEGER; 
+                }
+{BRACKET}   { 
+#ifdef DEBUG_CALC
+                    printf("BRA<%c>",yytext[0]); 
+#endif
+                    return yytext[0]; 
+            }
+
 {VARIABLE}  { 
 		isFound = 0;
 		for(i=0; i<varCounter; i++)
@@ -46,9 +68,18 @@ info.*        return INFO;
 			yylval = varCounter++; 
 			
 		}
-		return VARIABLE; 
+#ifdef DEBUG_CALC
+                 printf("VAR<%s>",yytext);
+#endif		
+                return VARIABLE; 
 	    }
-\n          { return NEWLINE; }
+\n          { 
+#ifdef DEBUG_CALC
+                printf("NWL<>"); 
+#endif
+                return NEWLINE; 
+            }
+
 [ \t]       ;
 .           ;   
 %%

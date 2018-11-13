@@ -16,11 +16,10 @@ int i;
 %}
 
 
-%token NUMBER VARIABLE NEWLINE EXIT INFO
+%token INTEGER VARIABLE NEWLINE EXIT INFO EXP
 %right '='
 %left   '+' '-'
 %left   '*' '/'
-%left   '^'
 %left UMINUS 
 
 %start lines
@@ -54,15 +53,15 @@ exp:   exp '+' exp   { $$ = $1 + $3; }
 
      | exp '/' exp   { if( $3 == 0 ) {  yyerror("Divide by Zero Error"); $$ = -1; return 1; } else { $$ = $1 / $3 ; } } 
 
-     | exp '^' exp   { $$ = pow($1,$3); }
- 
      | '-' exp %prec UMINUS { $$ = 0 - $2; }
 
      | '(' exp ')'   { $$ = $2; }
+
+     | EXP '(' exp ',' exp ')'  { $$ = pow($3,$5); } 
    
      | VARIABLE      { if( isSet[$1] == 0 ) { yyerror("Variable not initialized"); $$ = -1; return 1; } else $$ = reg[$1]; }
 
-     | NUMBER        { $$ = $1; }
+     | INTEGER        { $$ = $1; }
 
      ;
 %%
@@ -75,8 +74,14 @@ int main()
 {
     printf("Calculator built using YACC and LEX\n");
     printf("Author: Dharmesh Singh (@scipsycho)\n");
-    printf("Reserved keywords: exit, quit, info\n");
-    printf(">> ");
+    printf("Reserved keywords: exit, quit, info, exp\n");
+    printf("Supported operators: \n");
+    printf("Addition:    + \n");
+    printf("Subtraction: - \n");
+    printf("Multiplication: * \n");
+    printf("Division: / \n");
+    printf("Exponentiation: exp(op1,op2) \n");
+    printf("\n\n>> ");
     while(yyparse()==1)
     {
         yylex();
