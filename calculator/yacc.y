@@ -50,13 +50,13 @@ exp:   exp '+' exp   { $$ = $1 + $3; }
 
      | exp '*' exp   { $$ = $1 * $3; } 
 
-     | exp '/' exp   { if( $3 == 0 ) {  yyerror("Divide by Zero Error"); $$ = -1; } else { $$ = $1 / $3 ; } } 
+     | exp '/' exp   { if( $3 == 0 ) {  yyerror("Divide by Zero Error"); $$ = -1; return 1; } else { $$ = $1 / $3 ; } } 
 
      | '-' exp %prec UMINUS { $$ = 0 - $2; }
 
      | '(' exp ')'   { $$ = $2; }
    
-     | VARIABLE      { if( isSet[$1] == 0 ) { yyerror("Variable not initialized"); $$ = -1; } else $$ = reg[$1]; }
+     | VARIABLE      { if( isSet[$1] == 0 ) { yyerror("Variable not initialized"); $$ = -1; return 1; } else $$ = reg[$1]; }
 
      | NUMBER        { $$ = $1; }
 
@@ -73,6 +73,11 @@ int main()
     printf("Author: Dharmesh Singh (@scipsycho)\n");
     printf("Reserved keywords: exit, quit, info\n");
     printf(">> ");
-    yyparse();
+    while(yyparse()==1)
+    {
+        yylex();
+        printf(">> ");
+    }
+
 }
 

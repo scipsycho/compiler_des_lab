@@ -1279,7 +1279,7 @@ yyreduce:
 
   case 11:
 #line 53 "yacc.y" /* yacc.c:1646  */
-    { if( (yyvsp[0]) == 0 ) {  yyerror("Divide by Zero Error"); (yyval) = -1; } else { (yyval) = (yyvsp[-2]) / (yyvsp[0]) ; } }
+    { if( (yyvsp[0]) == 0 ) {  yyerror("Divide by Zero Error"); (yyval) = -1; return 1; } else { (yyval) = (yyvsp[-2]) / (yyvsp[0]) ; } }
 #line 1284 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1297,7 +1297,7 @@ yyreduce:
 
   case 14:
 #line 59 "yacc.y" /* yacc.c:1646  */
-    { if( isSet[(yyvsp[0])] == 0 ) { yyerror("Variable not initialized"); (yyval) = -1; } else (yyval) = reg[(yyvsp[0])]; }
+    { if( isSet[(yyvsp[0])] == 0 ) { yyerror("Variable not initialized"); (yyval) = -1; return 1; } else (yyval) = reg[(yyvsp[0])]; }
 #line 1302 "y.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1549,6 +1549,11 @@ int main()
     printf("Author: Dharmesh Singh (@scipsycho)\n");
     printf("Reserved keywords: exit, quit, info\n");
     printf(">> ");
-    yyparse();
+    while(yyparse()==1)
+    {
+        yylex();
+        printf(">> ");
+    }
+
 }
 
