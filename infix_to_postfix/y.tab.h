@@ -47,15 +47,13 @@ extern int yydebug;
   {
     NUMBER = 258,
     NEWLINE = 259,
-    EXIT = 260,
-    UMINUS = 261
+    EXIT = 260
   };
 #endif
 /* Tokens.  */
 #define NUMBER 258
 #define NEWLINE 259
 #define EXIT 260
-#define UMINUS 261
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

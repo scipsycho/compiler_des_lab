@@ -13,7 +13,6 @@ int first = 1;
 %token NUMBER NEWLINE EXIT 
 %left '+' '-'
 %left '*' '/'
-%left UMINUS
 
 %start lines
 
