@@ -2384,13 +2384,13 @@ void yyfree (void * ptr )
 
 
 
-yywrap()
+int yywrap()
 {
     return(1);
 }
 
 
-comment()
+void comment()
 {
     char c, c1;
 

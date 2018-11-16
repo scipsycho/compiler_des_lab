@@ -45,29 +45,36 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    DATA_TYPE = 258,
-    IDENTIFIER = 259,
-    SEMICOLON = 260,
-    COMMA = 261,
-    CURLY_OPEN = 262,
-    CURLY_CLOSE = 263,
-    CIRC_OPEN = 264,
-    CIRC_CLOSE = 265
+    IDENTIFIER = 258,
+    DATA_TYPE = 259,
+    INCLUDE = 260,
+    L_CURLY = 261,
+    R_CURLY = 262,
+    NEWLINE = 263
   };
 #endif
 /* Tokens.  */
-#define DATA_TYPE 258
-#define IDENTIFIER 259
-#define SEMICOLON 260
-#define COMMA 261
-#define CURLY_OPEN 262
-#define CURLY_CLOSE 263
-#define CIRC_OPEN 264
-#define CIRC_CLOSE 265
+#define IDENTIFIER 258
+#define DATA_TYPE 259
+#define INCLUDE 260
+#define L_CURLY 261
+#define R_CURLY 262
+#define NEWLINE 263
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 30 "yacc.y" /* yacc.c:1909  */
+
+    char *stringValue;
+    int intValue;
+
+#line 75 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

@@ -1,69 +1,67 @@
 %{
 
-#include <stdio.h>
-#include <string.h>
-#include "y.tab.h"
-#include "global.h"
-int i;
-
-char * varNames[SIZE] = { NULL };
-char * varTypes[SIZE] = { NULL };
-char * dType 
+    #include <stdio.h>
+    #include "y.tab.h"
+    #include "global.h"
+    #define LEX_DEBUG_H
+    int curl_depth = 0;
 %}
 
-DATA_TYPE  "int"|"float"|"double"|"char"
-IDENTIFIER  [a-zA-Z_][a-zA-Z0-9_]*
+IDENTIFIER   [_a-zA-Z][_a-zA-Z0-9]*
+DATA_TYPE    "int"|"float"|"double"|"char"
+L_CURLY      "{"
+R_CURLY      "}"
+
 
 %%
 
-"#".*        ;
-{DATA_TYPE}  { 
-                i = 0;
-                while(i <= dtype_i )
-                {
-                    if(strcmp(yytext,dTypeNames[i]) == 0)
-                        break;
-                    i++;
-                }  
+{DATA_TYPE}   { 
+#ifdef LEX_DEBUG_H
+                printf("`DTY`");
+#endif
+                strcpy(currDataType, yytext);
+                yylval.stringValue = strdup(yytext); return DATA_TYPE; }
+"include"   { 
+#ifdef LEX_DEBUG_H
+                printf("`INC`");
+#endif
+                return INCLUDE; }
+{IDENTIFIER}  { 
+#ifdef LEX_DEBUG_H
+                printf("`IDR`");
+#endif
+                yylval.stringValue = strdup(yytext); return IDENTIFIER; }
+{L_CURLY}     { 
+#ifdef LEX_DEBUG_H
+                printf("`LCR`");
+#endif
+                curl_depth += 1; return L_CURLY; }
+{R_CURLY}     { 
+#ifdef LEX_DEBUG_H
+                printf("`RCR`");
+#endif
                 
-                if( i > dtype_i )
+                curl_depth -= 1; 
+                if(curl_depth < 0 )
                 {
-                    yyerror("Unknown data type error");
-                    exit(1); 
+                        yyerror("Unbalanced Curly Braces ");
+                        exit(1);
                 }
-                printf("DT");
-                yylval = i;
-                return DATA_TYPE; 
-             }
+                return R_CURLY;
+            }
+[;,()<>#"]      { 
+#ifdef LEX_DEBUG_H
+                printf("`SY%c`",yytext[0]);
+#endif
+                    return yytext[0]; }
 
-{IDENTIFIER} { 
-                if( var_i >= SIZE )
-                {
-                    yyerror("Identifier overflow error");
-                    exit(1);
+\.            {
+#ifdef LEX_DEBUG_H
+                printf("`SY%c`",yytext[0]);
+#endif
+                    return yytext[0];
                 }
-                varNames[var_i] = malloc(sizeof(char)*yyleng);
-                memcpy(varNames[var_i],yytext, yyleng);
-                yylval = var_i;
-                var_i++;
-                printf("ID");
-                return IDENTIFIER; 
-             }
+.           ;
 
-
-";"            { printf(";");  return SEMICOLON; }
-
-","            { printf(","); return COMMA; }
-
-"{"            { printf("{"); return CURLY_OPEN; }
-
-"}"            { printf("}"); return CURLY_CLOSE; }
-
-"("            { printf("("); return CIRC_OPEN; }
-
-")"            { printf(")"); return CIRC_CLOSE; }
-
-.            ;
 %%
-
 

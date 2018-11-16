@@ -113,13 +113,13 @@ L?\"(\\.|[^\\"])*\"     { count(); return(STRING_LITERAL); }
 
 %%
 
-yywrap()
+int yywrap()
 {
     return(1);
 }
 
 
-comment()
+void comment()
 {
     char c, c1;
 
